@@ -37,8 +37,10 @@ public class FirebaseConfig
 
 	@Bean
 	public Firestore getDatabase() throws IOException {
+		String serviceAccountJson = System.getenv("SERVICE_ACCOUNT_JSON");
+		InputStream serviceAccount = new ByteArrayInputStream(serviceAccountJson.getBytes(StandardCharsets.UTF_8));
 		FirestoreOptions firestoreOptions = FirestoreOptions.newBuilder()
-				.setCredentials(GoogleCredentials.getApplicationDefault()).build();
+				.setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
 		return firestoreOptions.getService();
 	}
 }
