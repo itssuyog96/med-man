@@ -11,7 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class FirebaseConfig
@@ -22,8 +25,10 @@ public class FirebaseConfig
 	@Primary
 	@Bean
 	public void firebaseInit() throws IOException {
+		String serviceAccountJson = System.getenv("SERVICE_ACCOUNT_JSON");
+		InputStream serviceAccount = new ByteArrayInputStream(serviceAccountJson.getBytes(StandardCharsets.UTF_8));
 		FirebaseOptions options = new FirebaseOptions.Builder()
-				.setCredentials(GoogleCredentials.getApplicationDefault())
+				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 				.setDatabaseUrl(securityProperties.getFirebaseProps().getDatabaseUrl()).build();
 		if(FirebaseApp.getApps().isEmpty()) {
 			FirebaseApp.initializeApp(options);

@@ -8,6 +8,6 @@ public class FirebaseProperties
 	int sessionExpiryInDays;
 	String databaseUrl;
 	boolean enableStrictServerSession;
-	boolean enableCheckSessionRevoked;
+	boolean 	enableCheckSessionRevoked;
 	boolean enableLogoutEverywhere;
 }
